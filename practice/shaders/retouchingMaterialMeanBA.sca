@@ -1,0 +1,26 @@
+precision highp float;
+
+const int kMeanSample = 8;
+const int kKernelSize = 15;
+
+vec4 main(std::Texture2d BATex) {
+  vec2 originalImageSize = BATex.size * 8.0;
+  vec2 uv = std::getVertexTexCoord();
+
+  const int kSmallKernelSize = ((kKernelSize + 1) / kMeanSample) + 1;
+  const float kSmallKernelSizeRcp = 1.0 / (float(kSmallKernelSize) * float(kSmallKernelSize));
+
+  vec2 duv = float(kMeanSample) / originalImageSize;
+  vec2 uv0 = uv - duv * 0.5 * float(kSmallKernelSize - 1);
+
+  vec4 meanBA = vec4(0.0);
+  for (int j = 0; j < kSmallKernelSize; ++j) {
+    for (int i = 0; i < kSmallKernelSize; ++i) {
+      vec2 texc = uv0 + duv * vec2(float(i), float(j));
+      vec4 tex = BATex.sample(texc);
+      meanBA += tex;
+    }
+  }
+  meanBA *= kSmallKernelSizeRcp;
+  return meanBA;
+}
