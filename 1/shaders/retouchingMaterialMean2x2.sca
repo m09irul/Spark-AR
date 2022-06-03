@@ -1,0 +1,14 @@
+precision highp float;
+
+float luma(vec3 v) {
+    return dot(v, vec3(0.2989, 0.5870, 0.1140));
+}
+
+vec4 main(std::Texture2d Texture) {
+    vec2 uv = std::getVertexTexCoord();
+
+    vec4 base;
+    base.xyz = Texture.sample(uv).xyz;
+    base.w = luma(base.xyz);
+    return base;
+}

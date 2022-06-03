@@ -1,0 +1,39 @@
+precision highp float;
+
+const float kSmoothingFactor = 0.7;
+const float kHighFreqHigh = 0.4;
+
+vec4 boxFilter2x2(std::Texture2d tex, vec2 uv, vec2 duv) {
+  vec4 color = tex.sample(uv + vec2(-duv.x, -duv.y));
+  color += tex.sample(uv + vec2( duv.x, -duv.y));
+  color += tex.sample(uv + vec2(-duv.x,  duv.y));
+  color += tex.sample(uv + vec2( duv.x,  duv.y));
+  return 0.25 * color;
+}
+
+vec4 main(std::Texture2d MeanBATex,
+          std::Texture2d Mean2x2Tex,
+          std::Texture2d Texture,
+          std::Texture2d FaceMask,
+          float FullFrame) {
+  vec2 uv = std::getVertexTexCoord();
+
+  vec4 base = Texture.sample(uv);
+  vec4 mask = FaceMask.sample(uv);
+  vec4 meanAB = MeanBATex.sample(uv);
+  vec3 smoothed = meanAB.w * base.xyz + meanAB.xyz;
+
+  // Apply full-screen skin-smoothing with higher intensity on face
+  // Mask has a full red texture applied
+  float smoothingMask = mask.r;
+  if (FullFrame == 1.0) {
+    smoothingMask = max(0.65, mask.r);
+  }
+  base.xyz = mix(base.xyz, smoothed.xyz, smoothingMask);
+
+  vec4 mean4 = boxFilter2x2(Mean2x2Tex, uv, 1.0 / Mean2x2Tex.size);
+  vec3 diff = 2.0 * (base.xyz - mean4.xyz);
+  base.xyz += smoothingMask * kSmoothingFactor * kHighFreqHigh * diff;
+
+  return vec4(base.xyz, 1.0);
+}

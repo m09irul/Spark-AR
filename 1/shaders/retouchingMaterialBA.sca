@@ -1,0 +1,40 @@
+precision highp float;
+
+const int kMeanSample = 8;
+const int kKernelSize = 15;
+
+vec4 main(std::Texture2d Mean8x8Tex,
+          float Intensity) {
+  vec2 originalImageSize = Mean8x8Tex.size * 8.0;
+  vec2 uv = std::getVertexTexCoord();
+  vec2 duv = float(kMeanSample) / originalImageSize;
+
+  const int kSmallKernelSize = ((kKernelSize + 1) / kMeanSample) + 1;
+  const float kSmallKernelSizeRcp = 1.0 / (float(kSmallKernelSize) * float(kSmallKernelSize));
+
+  vec2 uv0 = uv - duv * 0.5 * float(kSmallKernelSize - 1);
+
+  vec4 meanIp = vec4(0.0);
+  vec4 corrIp = vec4(0.0);
+
+  for (int j = 0; j < kSmallKernelSize; ++j) {
+    for (int i = 0; i < kSmallKernelSize; ++i) {
+      vec2 texc = uv0 + duv * vec2(float(i), float(j));
+      vec4 sampledTex = Mean8x8Tex.sample(texc);
+      meanIp += sampledTex;
+      corrIp += sampledTex.w * sampledTex;
+    }
+  }
+
+  meanIp *= kSmallKernelSizeRcp;
+  corrIp *= kSmallKernelSizeRcp;
+  vec4 varIp = corrIp - meanIp.w * meanIp;
+
+  // Linear range [0.015, 0.035] for smoothing
+  float epsilon = 0.015 + 0.02 * Intensity;
+  float epsilon2 = epsilon * epsilon;
+
+  float a = max(0.0, varIp.w / (varIp.w + epsilon2));
+  vec3 b = meanIp.xyz - a * meanIp.xyz;
+  return vec4(b, a);
+}
