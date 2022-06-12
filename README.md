@@ -56,8 +56,8 @@
 
 ## Rainbow gradient
 
-|<img src = https://github.com/MIShanto/Spark-AR/blob/main/11.%20rainbow%20gradient/1.png>|<img src = https://github.com/MIShanto/Spark-AR/blob/main/11.%20rainbow%20gradient/2.png>|<img src = https://github.com/MIShanto/Spark-AR/blob/main/11.%20rainbow%20gradient/3.png>|
-|-|-|-|
+|<img src = https://github.com/MIShanto/Spark-AR/blob/main/11.%20rainbow%20gradient/1.png>|<img src = https://github.com/MIShanto/Spark-AR/blob/main/11.%20rainbow%20gradient/2.png>|<img src = https://github.com/MIShanto/Spark-AR/blob/main/11.%20rainbow%20gradient/3.png>|<img src = https://github.com/MIShanto/Spark-AR/blob/main/11.%20rainbow%20gradient/4.png>|
+|-|-|-|-|
 
 ## Colorize
 
