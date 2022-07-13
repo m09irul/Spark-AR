@@ -64,7 +64,20 @@
 |<img src =https://github.com/MIShanto/Spark-AR/blob/main/12.Color/1.png>|<img src = https://github.com/MIShanto/Spark-AR/blob/main/12.Color/2.png>|
 |-|-|
 
+## Native UI via code
 
+|<img src =https://github.com/MIShanto/Spark-AR/blob/main/13.%20UI/1.png>|
+|-|
+
+## Segmentation
+
+|<img src =https://github.com/MIShanto/Spark-AR/blob/main/14.segmentation/1.png>|<img src=https://github.com/MIShanto/Spark-AR/blob/main/14.segmentation/2.png>|
+|-|-|
+
+## Target tracking
+
+|<img src = https://github.com/MIShanto/Spark-AR/blob/main/15.target%20tracking/1.png>|<img src =https://github.com/MIShanto/Spark-AR/blob/main/15.target%20tracking/2.png>|
+|-|-|
 
 
 
